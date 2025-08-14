@@ -1,9 +1,26 @@
 import { useState } from "react";
 import "./App.css";
 
+interface StatsData {
+  player?: {
+    stats?: {
+      MCGO?: {
+        kills: number;
+        deaths: number;
+        game_wins: number;
+        game_plays: number;
+        level: number;
+        assists: number;
+        round_wins: number;
+        knife_kills: number;
+      };
+    };
+  };
+}
+
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState({});
+  const [stats, setStats] = useState<StatsData>({});
   const [username, setUsername] = useState("");
   const [lastSearchedUsername, setLastSearchedUsername] = useState("");
   const api_url =
@@ -11,7 +28,7 @@ export default function App() {
 
   const cvc_stats = stats?.player?.stats?.MCGO;
 
-  async function fetchStats(username) {
+  async function fetchStats(username: string) {
     if (!lastSearchedUsername) {
       setLastSearchedUsername(username);
     }
@@ -21,11 +38,12 @@ export default function App() {
     const statsRes = await fetch(`${api_url}${username}`);
     const statsJson = await statsRes.json();
     setStats(statsJson);
+    setLastSearchedUsername(username);
     setLoading(false);
     console.log(statsJson);
   }
 
-  function handleSubmit(e) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (username.trim()) {
       setLoading(true);
