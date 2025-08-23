@@ -1,10 +1,23 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import getPlayerStats from "../../lib/getPlayerStats";
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function App() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [searchedUsername, setSearchedUsername] = useState("");
+
+  // Initialize searchedUsername from the URL params on component
+  useEffect(() => {
+    const urlUsername = searchParams.get("q");
+    if (urlUsername) {
+      setSearchedUsername(urlUsername);
+    }
+  }, [searchParams]);
+
   const { isLoading, data } = useQuery({
     queryKey: ["playerStats", searchedUsername],
     queryFn: () => getPlayerStats(searchedUsername),
@@ -20,7 +33,9 @@ export default function App() {
     const formData = new FormData(form);
     const username = formData.get("username") as string;
     if (typeof username === "string" && username.trim()) {
-      setSearchedUsername(username.trim());
+      const trimmedUsername = username.trim();
+      setSearchedUsername(trimmedUsername);
+      router.push(`?q=${encodeURIComponent(trimmedUsername)}`);
     }
   }
   return (
@@ -38,6 +53,7 @@ export default function App() {
             id="username"
             name="username"
             className="border border-slate-400 rounded-sm ml-2 p-0.5 pl-1"
+            defaultValue={searchParams.get("q") || ""}
           />
           <button
             className="block text-white bg-blue-600 rounded-md px-2 py-1 mt-1 hover:bg-blue-500"
@@ -54,7 +70,12 @@ export default function App() {
           <p>Loading...</p>
         ) : cvc_stats ? (
           <div>
-            <p className="text-lg">Stats for {searchedUsername}</p>
+            <p className="text-lg">
+              Stats for{" "}
+              <span className="font-mono text-xl">
+                {data.player.displayname}
+              </span>
+            </p>
             <p>k/d: {cvc_stats.kills / cvc_stats.deaths}</p>
             <p>Kills: {cvc_stats.kills}</p>
             <p>deaths: {cvc_stats.deaths}</p>
