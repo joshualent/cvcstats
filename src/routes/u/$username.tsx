@@ -1,6 +1,6 @@
-import { createFileRoute, Link, useLoaderData } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { getHypixelStats, getPlayerUUID } from '../../lib/utils'
-import SimpleStat from '../../components/SimpeStat'
+import SimpleStat from '../../components/SimpleStat'
 
 export const Route = createFileRoute('/u/$username')({
   component: RouteComponent,
