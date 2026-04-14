@@ -5,7 +5,7 @@ const CONVEX_URL =
 
 if (!CONVEX_URL) {
   throw new Error(
-    'Missing VITE_CONVEX_URL. Set it in Vercel project environment variables and local .env.local.'
+    'Missing VITE_CONVEX_URL. For Vercel production, use a build command that runs `convex deploy` with `--cmd-url-env-var-name VITE_CONVEX_URL`, or set the variable explicitly.'
   )
 }
 

@@ -1,4 +1,4 @@
 {
-  "buildCommand": "pnpm build",
+  "buildCommand": "pnpm exec convex deploy --cmd 'pnpm build' --cmd-url-env-var-name VITE_CONVEX_URL",
   "outputDirectory": ".output"
 }
