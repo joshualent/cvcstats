@@ -7,5 +7,10 @@
   },
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true
-  }
+  },
+  "cSpell.words": [
+    "Hypixel",
+    "MCGO",
+    "Mojang"
+  ]
 }

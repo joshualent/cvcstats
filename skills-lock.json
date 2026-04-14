@@ -14,7 +14,7 @@
     "convex-performance-audit": {
       "source": "get-convex/agent-skills",
       "sourceType": "github",
-      "computedHash": "377d104012670360ffbec6f2134a5af13865decf58148dd162ab809dddfb2363"
+      "computedHash": "30ea0d3c259df011e44ea9b70502ab272f5ac3bd1fb3672ae18489ba99b2c4ae"
     },
     "convex-quickstart": {
       "source": "get-convex/agent-skills",
