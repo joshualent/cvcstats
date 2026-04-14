@@ -39,6 +39,7 @@ function RouteComponent() {
       </h2>
 
       <div className="border p-5">
+        <SimpleStat label="CVC Level" value={playerInfo.stats.MCGO.level} />
         <SimpleStat label="Kills" value={playerInfo.stats.MCGO.kills} />
         <SimpleStat
           label="Headshot kils"
@@ -72,7 +73,14 @@ function RouteComponent() {
           label="Knife Kills"
           value={playerInfo.stats.MCGO.knife_kills}
         />
-        <SimpleStat label="Game Wins" value={playerInfo.stats.MCGO.game_wins} />
+        <SimpleStat
+          label="Bombs Defused"
+          value={playerInfo.stats.MCGO.bombs_defused}
+        />
+        <SimpleStat
+          label="Bombs Planted"
+          value={playerInfo.stats.MCGO.bombs_planted}
+        />
       </div>
       <p className="text-lg text-muted-foreground mt-8">
         This app is still in development! 💀
