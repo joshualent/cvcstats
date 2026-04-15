@@ -5,8 +5,8 @@ import { twMerge } from 'tailwind-merge'
 import type {
   HypixelPlayerAPIResponse,
   MojangProfileAPIResponse,
+  PlayerData,
 } from './types'
-import { api } from '../../convex/_generated/api'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -20,6 +20,11 @@ export const getPlayerUUID = createServerFn({
     const mojang_response = await fetch(
       `https://api.mojang.com/users/profiles/minecraft/${data.username}`,
     )
+    if (!mojang_response.ok) {
+      throw new Error(
+        'Player lookup failed. Are you sure this username exists?',
+      )
+    }
     return (await mojang_response.json()) as MojangProfileAPIResponse
   })
 
@@ -30,7 +35,7 @@ export const getHypixelStats = createServerFn({
   .handler(async ({ data }) => {
     const apiKey = process.env.HYPIXEL_API_KEY
     if (!apiKey) {
-      throw new Error('HYPIXEL_API_KEY is not set')
+      throw new Error("Can't fetch Hypixel statistics at this time")
     }
 
     const hypixel_response = await fetch(
@@ -38,11 +43,42 @@ export const getHypixelStats = createServerFn({
       { headers: { 'API-Key': apiKey } },
     )
     if (!hypixel_response.ok) {
-      throw new Error('Hypixel API Request unsuccessful')
+      throw new Error('Unable to fetch player information from Hypixel')
     }
-    const hypixel_data = await hypixel_response.json()
-    if (!hypixel_data.player) {
-      throw new Error('Player information not available in Hypixel Response')
+    const hypixel_data: HypixelPlayerAPIResponse = await hypixel_response.json()
+    if (!hypixel_data?.player) {
+      throw new Error('Unable to fetch player information from Hypixel')
     }
-    return hypixel_data.player as HypixelPlayerAPIResponse
+
+    const {
+      uuid,
+      displayname,
+      networkExp,
+      firstLogin,
+      lastLogin,
+      lastLogout,
+      mostRecentGameType,
+      newPackageRank,
+      rank,
+      stats,
+    } = hypixel_data.player
+
+    if (!stats.MCGO) {
+      throw new Error('CVC stats are not available for this player')
+    }
+
+    const playerData: PlayerData = {
+      uuid,
+      displayname,
+      networkExp,
+      firstLogin,
+      lastLogin,
+      lastLogout,
+      mostRecentGameType,
+      newPackageRank,
+      rank,
+      stats: stats.MCGO,
+    }
+
+    return playerData
   })

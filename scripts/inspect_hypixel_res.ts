@@ -3,7 +3,8 @@ import { readFile } from 'fs/promises'
 import getHypixelStats, {
   extractRelevantData,
   extractStatObjKeys,
-} from './utils'
+  extractStatObjKeysWithTypes,
+} from './scriptUtilityFunctions'
 
 async function writeHypixelDataToJson() {
   const players = [
@@ -42,9 +43,19 @@ const inspectHypixelJsonKeys = async () => {
 const getAllStatKeys = async () => {
   const fileText = await readFile('./scripts/playerData.json', 'utf-8')
   const allPlayerData = JSON.parse(fileText)
-  console.log(await extractStatObjKeys(allPlayerData))
+  const mcgoStatsObj = await extractStatObjKeysWithTypes(allPlayerData)
+  console.log(mcgoStatsObj)
+  let playerTypeStr = 'type McgoStats = {\n'
+  for (const key of Object.keys(mcgoStatsObj)) {
+    playerTypeStr += `  ${key}?: ${mcgoStatsObj[key]},\n`
+  }
+  playerTypeStr += '}'
+  // doesn't generate exact type for keys that have spaces in them
+  // requires manual intervention for that
+
+  writeFile('./scripts/generatedStatType.ts', playerTypeStr, () => {})
 }
 
-// getAllStatKeys()
+getAllStatKeys()
 
 // inspectHypixelJsonKeys()

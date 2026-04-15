@@ -64,14 +64,14 @@ export const extractRelevantData = async (obj: any) => {
   }
 }
 
-export const extractStatObjKeys = async (objArr: object[]) => {
+export const extractStatObjKeys = async (objArr: any[]) => {
   const allKeys = []
   for (const obj of objArr) {
     const statsKeys = Object.keys(obj.stats)
     allKeys.push(...statsKeys)
   }
 
-  let keyAppearances = {}
+  let keyAppearances: any = {}
   for (const key of allKeys) {
     if (key in keyAppearances) {
       keyAppearances[key] += 1
@@ -90,5 +90,29 @@ export const extractStatObjKeys = async (objArr: object[]) => {
 // 124 keys on Fhie (OG player)
 // 51 keys on Georging (i think good player?)
 // 23 unique keys on a newish-player (CodeDependent)
+
+export const extractStatObjKeysWithTypes = async (objArr: any[]) => {
+  const allKeys = []
+  for (const obj of objArr) {
+    const statsKeys = Object.entries(obj.stats)
+    // console.log(statsKeys)
+    allKeys.push(...statsKeys)
+  }
+
+  let keyAppearances: any = {}
+  for (const key of allKeys) {
+    if (key[0] in keyAppearances) {
+      if (typeof keyAppearances[key[0]] !== typeof key[1]) {
+        console.log(
+          `type mismatch for the same key in API Response\nPrevious type: ${typeof keyAppearances[key[0]]}\nCurrent type: ${typeof key[1]}`,
+        )
+      }
+    } else {
+      keyAppearances[key[0]] = typeof key[1]
+    }
+  }
+
+  return keyAppearances
+}
 
 export default getHypixelStats

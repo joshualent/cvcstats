@@ -34,7 +34,7 @@ function App() {
           <span className="block sm:inline"> Cops vs. Crims</span>
         </h2>
       </div>
-      <div className="md:border rounded-lg border-muted max-w-2xl mx-auto pt-6 pb-8 px-8 mt-8 md:mt-16">
+      <div className="md:border border-muted max-w-2xl mx-auto pt-6 pb-8 px-8 mt-8 md:mt-16">
         <h2 className="text-2xl mt-4 mb-1">Lookup player stats</h2>
         <p className="text-muted-foreground">
           Enter a username to fetch player statistics from{' '}
@@ -63,7 +63,7 @@ function App() {
             <Button
               type="submit"
               size="lg"
-              className="shrink-0 font-semibold sm:h-10 sm:px-3"
+              className="shrink-0 md:text-[1rem] sm:h-10 sm:px-3"
             >
               Lookup Stats
             </Button>

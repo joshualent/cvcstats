@@ -1,16 +1,3 @@
-export type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | JsonValue[]
-  | { [key: string]: JsonValue }
-
-export type MojangProfileAPIResponse = {
-  id: string
-  name: string
-}
-
 type McgoStats = {
   kills?: number
   deaths?: number
@@ -198,35 +185,4 @@ type McgoStats = {
   monthly_kills_b?: number
   weekly_kills_a?: number
   privategames?: object
-}
-
-export type PlayerData = {
-  uuid: string
-  displayname: string
-  networkExp: number
-  firstLogin: number
-  lastLogin: number
-  lastLogout: number
-  mostRecentGameType: string
-  newPackageRank: string
-  rank: string
-  stats: McgoStats
-}
-
-export type HypixelPlayerAPIResponse = {
-  success: boolean
-  player: {
-    uuid: string
-    displayname: string
-    networkExp: number
-    firstLogin: number
-    lastLogin: number
-    lastLogout: number
-    mostRecentGameType: string
-    newPackageRank: string
-    rank: string
-    stats: {
-      MCGO?: McgoStats & Record<string, JsonValue>
-    } & Record<string, JsonValue>
-  } & Record<string, JsonValue>
 }
