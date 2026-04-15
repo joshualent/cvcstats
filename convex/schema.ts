@@ -7,6 +7,14 @@ export default defineSchema({
     username: v.string(),
   }),
   records: defineTable({
+    firstLogin: v.number(),
+    lastLogin: v.number(),
+    lastLogout: v.number(),
+    networkExp: v.number(),
+    mostRecentGameType: v.string(),
+    newPackageRank: v.string(),
+    rank: v.string(),
+
     playerId: v.id('players'),
     level: v.number(),
     wins: v.number(),

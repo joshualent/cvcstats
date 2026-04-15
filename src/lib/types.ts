@@ -14,20 +14,130 @@ export type MojangProfileAPIResponse = {
 export type HypixelPlayerAPIResponse = {
   uuid: string
   displayname: string
+  networkExp: number
+
+  firstLogin: number
+  lastLogin: number
+  lastLogout: number
+  mostRecentGameType: string
+  newPackageRank: string
   stats: {
     MCGO: {
-      level: number
       kills: number
       deaths: number
-      assists: number
+      coins: number
       game_plays: number
       game_wins: number
+      game_wins_carrier: number
       round_wins: number
       shots_fired: number
+      kills_deathmatch: number
+      pistolKills: number
+      pistolHeadshots: number
+      cop_kills_deathmatch: number
+      game_plays_deathmatch: number
+      game_wins_deathmatch: number
       headshot_kills: number
+      pocket_change: number
       bombs_defused: number
+      grenadeKills: number
       bombs_planted: number
+      grenade_kills: number
+      packages: Array<string>
+      magnumKills: number
+      magnumHeadshots: number
+      criminal_kills: number
+      carbineKills: number
+      assists: number
+      cop_kills: number
+      game_wins_temple: number
+      shotgunHeadshots: number
+      autoShotgunKills: number
+      kills_gungame: number
+      scopedRifleHeadshots: number
+      handgunKills: number
+      game_wins_gungame: number
+      level: number
+      score: number
+      rifleHeadshots: number
+      rifleKills: number
+      game_wins_junction: number
       knife_kills: number
+      carbineHeadshots: number
+      game_wins_harbor: number
+      handgunHeadshots: number
+      'game_wins_melon factory v2': number
+      game_wins_alleyway: number
+      game_wins_derailed: number
+      game_wins_riviera: number
+      scopedRifleKills: number
+      smgHeadshots: number
+      smgKills: number
+      handgun_cost_reduction: number
+      game_wins_ruins: number
+      'game_wins_atomic v2': number
+      game_wins_overgrown: number
+      game_wins_sandstorm: number
+      shotgunKills: number
+      sniperKills: number
+      handgun_damage_increase: number
+      handgun_recoil_reduction: number
+      handgun_reload_speed_reduction: number
+      magnum_damage_increase: number
+      magnum_recoil_reduction: number
+      magnum_reload_speed_reduction: number
+      magnum_cost_reduction: number
+      rifle_damage_increase: number
+      rifle_recoil_reduction: number
+      rifle_reload_speed_reduction: number
+      rifle_cost_reduction: number
+      shotgun_damage_increase: number
+      shotgun_recoil_reduction: number
+      shotgun_reload_speed_reduction: number
+      shotgun_cost_reduction: number
+      pistol_damage_increase: number
+      pistol_recoil_reduction: number
+      pistol_reload_speed_reduction: number
+      scoped_rifle_damage_increase: number
+      scoped_rifle_recoil_reduction: number
+      scoped_rifle_cost_reduction: number
+      scoped_rifle_reload_speed_reduction: number
+      sniper_damage_increase: number
+      sniper_reload_speed_reduction: number
+      sniper_cost_reduction: number
+      carbine_damage_increase: number
+      carbine_recoil_reduction: number
+      carbine_reload_speed_reduction: number
+      carbine_cost_reduction: number
+      strength_training: number
+      bounty_hunter: number
+      sniperHeadshots: number
+      game_wins_bazaar: number
+      knife_attack_delay: number
+      knife_damage_increase: number
+      body_armor_cost: number
+      game_wins_castle: number
+      game_wins_reserve: number
+      bullpupKills: number
+      assists_deathmatch: number
+      criminal_kills_deathmatch: number
+      bullpup_cost_reduction: number
+      auto_shotgun_cost_reduction: number
+      assists_gungame: number
+      bullpupHeadshots: number
+      care_packages_collected_gungame: number
+      deaths_gungame: number
+      game_plays_gungame: number
+      speed_boosts_collected_gungame: number
+      autoShotgunHeadshots: number
+      bullpup_damage_increase: number
+      bullpup_recoil_reduction: number
+      bullpup_reload_speed_reduction: number
+      auto_shotgun_reload_speed_reduction: number
+      auto_shotgun_recoil_reduction: number
+      auto_shotgun_damage_increase: number
+      smg_damage_increase: number
+      smg_cost_reduction: number
     } & Record<string, JsonValue>
   } & Record<string, JsonValue>
 } & Record<string, JsonValue>
