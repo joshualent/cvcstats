@@ -4,7 +4,7 @@ export default function SimpleStat({
   isPercent = false,
 }: {
   label: string
-  value: number
+  value: number | undefined
   isPercent?: boolean
 }) {
   if (!value) {
