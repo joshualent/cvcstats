@@ -16,7 +16,7 @@ export default function Navigation() {
       <div className="flex min-w-0 items-center justify-start">
         <Button variant="ghost" size="icon-lg" asChild>
           <a
-            href="https://github.com/cvcstats"
+            href="https://github.com/joshualent/cvcstats"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="View cvcstats repository on GitHub"
