@@ -14,11 +14,11 @@ async function writeHypixelDataToJson() {
     'PrinceJohnPaul',
     'NosDaemon',
     'Georging',
-    'Dream',
     'Fhie',
     'Excrabular',
     'awesomerlegend',
-    'CodeDependent',
+    // 'CodeDependent',
+    // 'Dream',
   ]
 
   const playerData: object[] = []
@@ -32,12 +32,30 @@ async function writeHypixelDataToJson() {
   writeFile('./scripts/playerData.json', JSON.stringify(playerData), () => {})
 }
 
-writeHypixelDataToJson()
+// writeHypixelDataToJson()
 
 const inspectHypixelJsonKeys = async () => {
   const fileText = await readFile('./scripts/playerData.json', 'utf-8')
   const allPlayerData = JSON.parse(fileText)
   console.log(await extractRelevantData(allPlayerData[0]))
+}
+
+const getPlayerStats = async () => {
+  const fileText = await readFile('./scripts/playerData.json', 'utf-8')
+  const allPlayerData = JSON.parse(fileText)
+  const mcgoStatsObj = await extractRelevantData(allPlayerData)
+  console.log(mcgoStatsObj)
+  writeFile(
+    './scripts/generatedStatType.ts',
+    JSON.stringify(mcgoStatsObj),
+    () => {},
+  )
+}
+
+const inspectAPIResponseConsistency = async () => {
+  const fileText = await readFile('./scripts/playerData.json', 'utf-8')
+  const allPlayerData = JSON.parse(fileText)
+  const mcgoStatsObj = await extractStatObjKeys(allPlayerData)
 }
 
 const getAllStatKeys = async () => {
@@ -56,6 +74,8 @@ const getAllStatKeys = async () => {
   writeFile('./scripts/generatedStatType.ts', playerTypeStr, () => {})
 }
 
-getAllStatKeys()
+inspectAPIResponseConsistency()
+// getPlayerStats()
+// getAllStatKeys()
 
 // inspectHypixelJsonKeys()

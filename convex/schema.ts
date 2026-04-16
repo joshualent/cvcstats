@@ -1,6 +1,20 @@
 import { defineSchema, defineTable } from 'convex/server'
 import { v } from 'convex/values'
 
+const gunStat = v.object({
+  kills: v.optional(v.number()),
+  headshots: v.optional(v.number()),
+})
+const modeStat = v.object({
+  kills: v.optional(v.number()),
+  deaths: v.optional(v.number()),
+  game_plays: v.optional(v.number()),
+  game_wins: v.optional(v.number()),
+  cop_kills: v.optional(v.number()),
+  criminal_kills: v.optional(v.number()),
+  assists: v.optional(v.number()),
+})
+
 export default defineSchema({
   players: defineTable({
     uuid: v.string(),
@@ -8,17 +22,91 @@ export default defineSchema({
   }),
   records: defineTable({
     firstLogin: v.number(),
-    lastLogin: v.number(),
-    lastLogout: v.number(),
-    networkExp: v.number(),
-    mostRecentGameType: v.string(),
-    newPackageRank: v.string(),
-    rank: v.string(),
-
+    lastLogin: v.optional(v.number()),
+    lastLogout: v.optional(v.number()),
+    networkExp: v.optional(v.number()),
+    mostRecentGameType: v.optional(v.string()),
+    newPackageRank: v.optional(v.string()),
+    rank: v.optional(v.string()),
     playerId: v.id('players'),
-    level: v.number(),
-    wins: v.number(),
-    loses: v.number(),
-    gamesPlayed: v.number(),
+
+    kills: v.optional(v.number()),
+    deaths: v.optional(v.number()),
+    game_plays: v.optional(v.number()),
+    game_wins: v.optional(v.number()),
+    game_wins_carrier: v.optional(v.number()),
+    round_wins: v.optional(v.number()),
+    shots_fired: v.optional(v.number()),
+    headshot_kills: v.optional(v.number()),
+    bombs_defused: v.optional(v.number()),
+    bombs_planted: v.optional(v.number()),
+    criminal_kills: v.optional(v.number()),
+    assists: v.optional(v.number()),
+    cop_kills: v.optional(v.number()),
+    level: v.optional(v.number()),
+    score: v.optional(v.number()),
+    knife_kills: v.optional(v.number()),
+    grenade_kills: v.optional(v.number()),
+
+    guns: v.object({
+      pistol: gunStat,
+      magnum: gunStat,
+      carbine: gunStat,
+      shotgun: gunStat,
+      autoShotgun: gunStat,
+      scopedRifle: gunStat,
+      handgun: gunStat,
+      rifle: gunStat,
+      smg: gunStat,
+      sniper: gunStat,
+      bullpup: gunStat,
+    }),
+    modes: v.object({
+      deathmatch: modeStat,
+      gungame: modeStat,
+    }),
   }).index('by_playerId', ['playerId']),
 })
+
+// NOTE: old more manual table definitions for guns and modes
+// weaponRecords: defineTable({
+//   pistolKills: v.optional(v.number()),
+//   pistolHeadshots: v.optional(v.number()),
+//   magnumKills: v.optional(v.number()),
+//   magnumHeadshots: v.optional(v.number()),
+//   carbineKills: v.optional(v.number()),
+//   shotgunHeadshots: v.optional(v.number()),
+//   autoShotgunKills: v.optional(v.number()),
+//   scopedRifleheadshots: v.optional(v.number()),
+//   handgunKills: v.optional(v.number()),
+//   rifleHeadshots: v.optional(v.number()),
+//   rifleKills: v.optional(v.number()),
+//   carbineHeadshots: v.optional(v.number()),
+//   handgunHeadshots: v.optional(v.number()),
+//   scopedRifleKills: v.optional(v.number()),
+//   smgHeadshots: v.optional(v.number()),
+//   smgKills: v.optional(v.number()),
+//   shotgunKills: v.optional(v.number()),
+//   sniperKills: v.optional(v.number()),
+//   sniperHeadshots: v.optional(v.number()),
+//   bullpupKills: v.optional(v.number()),
+//   bullpupHeadshots: v.optional(v.number()),
+//   autoShotgunHeadshots: v.optional(v.number()),
+// }),
+
+// modeRecords: defineTable({
+//   kills_deathmatch: v.optional(v.number()),
+//   deaths_deathmatch: v.optional(v.number()),
+//   cop_kills_deathmatch: v.optional(v.number()),
+//   game_plays_deathmatch: v.optional(v.number()),
+//   game_wins_deathmatch: v.optional(v.number()),
+//   kills_gungame: v.optional(v.number()),
+//   game_wins_gungame: v.optional(v.number()),
+//   assists_deathmatch: v.optional(v.number()),
+//   criminal_kills_deathmatch: v.optional(v.number()),
+//   assists_gungame: v.optional(v.number()),
+//   deaths_gungame: v.optional(v.number()),
+//   game_plays_gungame: v.optional(v.number()),
+//   criminal_kills_gungame: v.optional(v.number()),
+//   cop_kills_gungame: v.optional(v.number()),
+// }),
