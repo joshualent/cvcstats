@@ -2,17 +2,19 @@ import { createServerFn } from '@tanstack/react-start'
 import { clsx } from 'clsx'
 import type { ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import type {
-  CvcStats,
-  Gun,
-  GunsStats,
-  GunStat,
-  HypixelPlayerAPIResponse,
-  Mode,
-  ModesStats,
-  ModeStat,
-  MojangProfileAPIResponse,
-  McgoStats,
+import {
+  type CvcStats,
+  type Gun,
+  type GunsStats,
+  type GunStat,
+  type HypixelPlayerAPIResponse,
+  type Mode,
+  type ModesStats,
+  type ModeStat,
+  type MojangProfileAPIResponse,
+  type McgoStats,
+  type ExtraCvcStats,
+  EXTRA_KEYS,
 } from './types'
 
 export function cn(...inputs: ClassValue[]) {
@@ -61,7 +63,7 @@ export const getHypixelStats = createServerFn({
       throw new Error('Cops Vs. Crims stats are not available for this player')
     }
 
-    return buildBaseCvcStats(hypixel_data.player)
+    return buildFullCvcStats(hypixel_data.player)
   })
 
 function buildGunStat(mcgo: McgoStats, name: Gun): GunStat {
@@ -166,5 +168,27 @@ function buildBaseCvcStats(
     grenade_kills,
     guns: guns,
     modes: modes,
+  }
+}
+
+function buildExtraCvcStats(
+  player: HypixelPlayerAPIResponse['player'],
+): ExtraCvcStats {
+  const result: ExtraCvcStats = {}
+  for (const key of EXTRA_KEYS) {
+    result[key] = player.stats.MCGO[key]
+  }
+  return result as ExtraCvcStats
+}
+
+function buildFullCvcStats(
+  player: HypixelPlayerAPIResponse['player'],
+): CvcStats & { extras: ExtraCvcStats } {
+  return {
+    ...buildBaseCvcStats(player),
+
+    extras: {
+      ...buildExtraCvcStats(player),
+    },
   }
 }

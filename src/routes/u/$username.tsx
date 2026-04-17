@@ -11,11 +11,7 @@ export const Route = createFileRoute('/u/$username')({
     const hypixelResponse = await getHypixelStats({
       data: { uuid: mojangResponse.id },
     })
-    return {
-      id: mojangResponse.id,
-      username: mojangResponse.name,
-      ...hypixelResponse,
-    }
+    return hypixelResponse
   },
   staleTime: 30 * 60_000,
   gcTime: 30 * 60_000,
@@ -42,9 +38,11 @@ function RouteComponent() {
       <p className="text-2xl text-muted-foreground mb-2">
         Stats for "{username}"
       </p>
-      <h1 className="text-5xl font-bold mb-1">{player.username ?? username}</h1>
+      <h1 className="text-5xl font-bold mb-1">
+        {player.displayname ?? username}
+      </h1>
       <h2 className="text-lg mb-4">
-        UUID: <span className="text-muted-foreground">{player.id}</span>
+        UUID: <span className="text-muted-foreground">{player.uuid}</span>
       </h2>
 
       <SimpleStatBox player={player} />
