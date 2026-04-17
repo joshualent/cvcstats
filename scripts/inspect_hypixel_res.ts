@@ -1,5 +1,5 @@
-import { writeFile } from 'fs'
-import { readFile } from 'fs/promises'
+import { writeFile } from 'node:fs'
+import { readFile } from 'node:fs/promises'
 import getHypixelStats, {
   extractRelevantData,
   extractStatObjKeys,
@@ -17,8 +17,20 @@ async function writeHypixelDataToJson() {
     'Fhie',
     'Excrabular',
     'awesomerlegend',
-    // 'CodeDependent',
-    // 'Dream',
+    'CodeDependent',
+    'Dream',
+    'GhibliDonut',
+    'Cuerpos',
+    'Cococosini',
+    'awesomerlegend',
+    'opcrafter_3',
+    'oDavey',
+    'ToyaLatina',
+    'ZealouslyDevoted',
+    'BamBamX2',
+    'WillimusWonka',
+    'AlexNotGreen',
+    '60c',
   ]
 
   const playerData: object[] = []
@@ -27,6 +39,7 @@ async function writeHypixelDataToJson() {
     const allData = await getHypixelStats(player)
     const data = await extractRelevantData(allData)
     playerData.push(data)
+    await new Promise((resolve) => setTimeout(resolve, 100))
   }
 
   writeFile('./scripts/playerData.json', JSON.stringify(playerData), () => {})
@@ -74,8 +87,8 @@ const getAllStatKeys = async () => {
   writeFile('./scripts/generatedStatType.ts', playerTypeStr, () => {})
 }
 
-inspectAPIResponseConsistency()
+// inspectAPIResponseConsistency()
 // getPlayerStats()
-// getAllStatKeys()
+getAllStatKeys()
 
 // inspectHypixelJsonKeys()

@@ -71,7 +71,7 @@ export const extractStatObjKeys = async (objArr: any[]) => {
     allKeys.push(...statsKeys)
   }
 
-  let keyAppearances: any = {}
+  const keyAppearances: any = {}
   for (const key of allKeys) {
     if (key in keyAppearances) {
       keyAppearances[key] += 1
@@ -99,7 +99,7 @@ export const extractStatObjKeysWithTypes = async (objArr: any[]) => {
     allKeys.push(...statsKeys)
   }
 
-  let keyAppearances: any = {}
+  const keyAppearances: any = {}
   for (const key of allKeys) {
     if (key[0] in keyAppearances) {
       if (typeof keyAppearances[key[0]] !== typeof key[1]) {
