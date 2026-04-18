@@ -339,3 +339,9 @@ export const EXTRA_KEYS = [
 export type Extras = Pick<McgoStats, (typeof EXTRA_KEYS)[number]>
 
 export type FullCvcStats = BaseCvcStats & { extras: Extras }
+
+export type StatsShape = FullCvcStats & StatsShapeExtras
+
+export type StatsShapeExtras = {
+  fetchedAt: number
+}

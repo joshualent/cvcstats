@@ -1,3 +1,4 @@
+import { Doc } from '../_generated/dataModel'
 import {
   McgoStats,
   Gun,
@@ -11,6 +12,7 @@ import {
   ModeStat,
   ModesStats,
   Extras,
+  StatsShape,
 } from './types'
 
 function buildGunStat(mcgo: McgoStats, name: Gun): GunStat {
@@ -137,5 +139,19 @@ export function buildFullCvcStats(
     ...buildBaseCvcStats(player),
 
     extras: buildExtraCvcStats(player),
+  }
+}
+
+export function fromDoc(doc: Doc<'records'>): StatsShape {
+  const { _id, _creationTime, ...base } = doc
+  return { ...base, extras: {}, fetchedAt: _creationTime }
+}
+export function fromApi(
+  player: HypixelPlayerAPIResponse['player'],
+): StatsShape {
+  return {
+    ...buildBaseCvcStats(player),
+    extras: buildExtraCvcStats(player),
+    fetchedAt: Date.now(),
   }
 }

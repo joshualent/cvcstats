@@ -8,14 +8,9 @@ import { internal } from './_generated/api'
 import { api } from './_generated/api'
 import { v } from 'convex/values'
 
-import type {
-  HypixelPlayerAPIResponse,
-  FullCvcStats,
-  Result,
-} from './lib/types'
-import { buildBaseCvcStats, buildFullCvcStats } from './lib/hypixel'
+import type { HypixelPlayerAPIResponse, Result, StatsShape } from './lib/types'
+import { buildBaseCvcStats, fromApi, fromDoc } from './lib/hypixel'
 import { recordFields } from './schema'
-import { Doc } from './_generated/dataModel'
 
 export const getPlayerByUsername = query({
   args: { username: v.string() },
@@ -92,10 +87,7 @@ export const createRecord = internalMutation({
 
 export const getHypixelStats = action({
   args: { username: v.string() },
-  handler: async (
-    ctx,
-    args,
-  ): Promise<Result<FullCvcStats | Doc<'records'>>> => {
+  handler: async (ctx, args): Promise<Result<StatsShape>> => {
     const player = await ctx.runAction(api.records.lookupPlayer, {
       username: args.username,
     })
@@ -113,7 +105,7 @@ export const getHypixelStats = action({
     if (data?._creationTime) {
       return {
         ok: true,
-        data,
+        data: fromDoc(data),
       }
     }
 
@@ -157,7 +149,7 @@ export const getHypixelStats = action({
 
     return {
       ok: true,
-      data: buildFullCvcStats(hypixel_data.player),
+      data: fromApi(hypixel_data.player),
     }
   },
 })
