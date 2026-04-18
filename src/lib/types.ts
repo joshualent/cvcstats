@@ -299,11 +299,12 @@ export type CvcStats = {
   uuid: string
   displayname: string
   firstLogin: number
-  lastLogin: number
-  lastLogout: number
+  lastLogin?: number
+  lastLogout?: number
   networkExp: number
-  mostRecentGameType: string
-  rank: string
+  newPackageRank?: string
+  mostRecentGameType?: string
+  rank?: string
 
   kills?: number
   deaths?: number
@@ -327,7 +328,7 @@ export type CvcStats = {
   modes: ModesStats
 }
 
-export type FullCvcStats = CvcStats & ExtraCvcStats
+export type FullCvcStats = CvcStats & { extras: ExtraCvcStats }
 
 export type ExtraCvcStats = {
   coins?: number

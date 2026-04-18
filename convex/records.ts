@@ -103,7 +103,7 @@ export const getHypixelStats = action({
     }
     // schedule a mutation to save player data to convex
     const stats = buildBaseCvcStats(hypixel_data.player)
-    const { uuid, displayname, ...rest } = stats
+    const { uuid, ...rest } = stats
 
     await ctx.scheduler.runAfter(0, internal.records.createRecord, {
       uuid,

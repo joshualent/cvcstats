@@ -16,6 +16,7 @@ const modeStat = v.object({
 })
 
 export const recordFields = {
+  displayname: v.optional(v.string()),
   firstLogin: v.optional(v.number()),
   lastLogin: v.optional(v.number()),
   lastLogout: v.optional(v.number()),

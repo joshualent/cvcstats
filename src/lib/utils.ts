@@ -15,6 +15,7 @@ import {
   type McgoStats,
   type ExtraCvcStats,
   EXTRA_KEYS,
+  type FullCvcStats,
 } from './types'
 
 export function cn(...inputs: ClassValue[]) {
@@ -95,6 +96,7 @@ function buildBaseCvcStats(
     lastLogin,
     lastLogout,
     networkExp,
+    newPackageRank,
     mostRecentGameType,
     rank,
     stats,
@@ -146,6 +148,7 @@ function buildBaseCvcStats(
     lastLogin,
     lastLogout,
     networkExp,
+    newPackageRank,
     mostRecentGameType,
     rank,
 
@@ -183,7 +186,7 @@ function buildExtraCvcStats(
 
 function buildFullCvcStats(
   player: HypixelPlayerAPIResponse['player'],
-): CvcStats & { extras: ExtraCvcStats } {
+): FullCvcStats {
   return {
     ...buildBaseCvcStats(player),
 

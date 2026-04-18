@@ -42,6 +42,7 @@ export function buildBaseCvcStats(
     lastLogin,
     lastLogout,
     networkExp,
+    newPackageRank,
     mostRecentGameType,
     rank,
     stats,
@@ -93,6 +94,7 @@ export function buildBaseCvcStats(
     lastLogin,
     lastLogout,
     networkExp,
+    newPackageRank,
     mostRecentGameType,
     rank,
 
@@ -130,7 +132,7 @@ function buildExtraCvcStats(
 
 export function buildFullCvcStats(
   player: HypixelPlayerAPIResponse['player'],
-): CvcStats & { extras: ExtraCvcStats } {
+): FullCvcStats {
   return {
     ...buildBaseCvcStats(player),
 

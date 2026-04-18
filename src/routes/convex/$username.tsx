@@ -16,11 +16,8 @@ function RouteComponent() {
   useEffect(() => {
     let cancelled = false
     const load = async () => {
-      const start = performance.now()
       const data = await getPlayerData({ username: username.toLowerCase() })
       if (!cancelled) setPlayer(data)
-      const elapsed = performance.now() - start
-      console.log(`took ${elapsed}ms`)
     }
     load()
     return () => {
