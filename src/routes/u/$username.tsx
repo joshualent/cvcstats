@@ -2,9 +2,9 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { useAction } from 'convex/react'
 import { api } from '../../../convex/_generated/api'
 import { useEffect, useState } from 'react'
-import type { CvcStats } from '../../lib/types'
 import SimpleStatBox from '../../components/SimpleStatBox'
 import type { Doc } from '../../../convex/_generated/dataModel'
+import type { FullCvcStats } from '../../../convex/lib/types'
 
 export const Route = createFileRoute('/u/$username')({
   component: RouteComponent,
@@ -12,7 +12,9 @@ export const Route = createFileRoute('/u/$username')({
 
 function RouteComponent() {
   const { username } = Route.useParams()
-  const [player, setPlayer] = useState<Doc<'records'> | CvcStats | null>(null)
+  const [player, setPlayer] = useState<Doc<'records'> | FullCvcStats | null>(
+    null,
+  )
   const getPlayerData = useAction(api.records.getHypixelStats)
   useEffect(() => {
     let cancelled = false

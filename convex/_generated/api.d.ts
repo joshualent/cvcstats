@@ -9,6 +9,7 @@
  */
 
 import type * as lib_hypixel from "../lib/hypixel.js";
+import type * as lib_types from "../lib/types.js";
 import type * as records from "../records.js";
 
 import type {
@@ -19,6 +20,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   "lib/hypixel": typeof lib_hypixel;
+  "lib/types": typeof lib_types;
   records: typeof records;
 }>;
 

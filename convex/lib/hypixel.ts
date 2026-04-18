@@ -1,17 +1,17 @@
 import {
   McgoStats,
   Gun,
-  GunStat,
   Mode,
-  ModeStat,
   HypixelPlayerAPIResponse,
-  CvcStats,
+  BaseCvcStats,
   FullCvcStats,
-  ExtraCvcStats,
-  GunsStats,
-  ModesStats,
   ExtraKey,
-} from '../../src/lib/types'
+  GunStat,
+  GunsStats,
+  ModeStat,
+  ModesStats,
+  Extras,
+} from './types'
 
 function buildGunStat(mcgo: McgoStats, name: Gun): GunStat {
   return {
@@ -34,7 +34,7 @@ function buildModeStat(mcgo: McgoStats, name: Mode): ModeStat {
 
 export function buildBaseCvcStats(
   player: HypixelPlayerAPIResponse['player'],
-): CvcStats {
+): BaseCvcStats {
   const {
     uuid,
     displayname,
@@ -122,12 +122,12 @@ export function buildBaseCvcStats(
 
 function buildExtraCvcStats(
   player: HypixelPlayerAPIResponse['player'],
-): ExtraCvcStats {
-  const result: ExtraCvcStats = {}
+): Extras {
+  const result: Extras = {}
   for (const key of EXTRA_KEYS) {
     result[key] = player.stats.MCGO[key]
   }
-  return result as ExtraCvcStats
+  return result as Extras
 }
 
 export function buildFullCvcStats(

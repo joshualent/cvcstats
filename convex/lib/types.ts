@@ -1,4 +1,75 @@
-type McgoStats = {
+import { Infer, v } from 'convex/values'
+import { gunStat, modeStat, recordFields } from '../schema'
+
+const recordValidator = v.object(recordFields)
+// type GunType = Infer<typeof gunStat>
+// type ModeType = Infer<typeof modeStat>
+
+export type BaseCvcStats = Infer<typeof recordValidator>
+
+export type MojangProfileAPIResponse = {
+  id: string
+  name: string
+}
+
+export type Gun =
+  | 'pistol'
+  | 'magnum'
+  | 'carbine'
+  | 'shotgun'
+  | 'autoShotgun'
+  | 'scopedRifle'
+  | 'handgun'
+  | 'rifle'
+  | 'smg'
+  | 'sniper'
+  | 'bullpup'
+export type GunKillsKey = `${Gun}Kills`
+export type GunHeadshotsKey = `${Gun}Headshots`
+export type GunStat = {
+  kills: number
+  headshots: number
+}
+
+export type GunsStats = {
+  pistol: GunStat
+  magnum: GunStat
+  carbine: GunStat
+  shotgun: GunStat
+  autoShotgun: GunStat
+  scopedRifle: GunStat
+  handgun: GunStat
+  rifle: GunStat
+  smg: GunStat
+  sniper: GunStat
+  bullpup: GunStat
+}
+
+export type Mode = 'deathmatch' | 'gungame'
+export type ModeKillsKey = `kills_${Mode}`
+export type ModeDeathsKey = `deaths_${Mode}`
+export type ModeGamePlaysKey = `game_plays_${Mode}`
+export type ModeGameWinsKey = `game_wins_${Mode}`
+export type ModeCopKillsKey = `cop_kills_${Mode}`
+export type ModeCriminalKillsKey = `criminal_kills_${Mode}`
+export type ModeAssistsKey = `assists_${Mode}`
+
+export type ModeStat = {
+  kills: number
+  deaths: number
+  game_plays: number
+  game_wins: number
+  cop_kills: number
+  criminal_kills: number
+  assists: number
+}
+
+export type ModesStats = {
+  deathmatch: ModeStat
+  gungame: ModeStat
+}
+
+export type McgoStats = {
   kills?: number
   deaths?: number
   coins?: number
@@ -185,6 +256,7 @@ type McgoStats = {
   monthly_kills_b?: number
   weekly_kills_a?: number
   privategames?: object
+
   setting_sounds_headshot?: boolean
   shop_sort_enable_owned_first?: boolean
   setting_screen_tint?: boolean
@@ -192,3 +264,96 @@ type McgoStats = {
   setting_defuse_tip_hologram?: boolean
   setting_money_messages?: boolean
 }
+
+export type HypixelPlayerAPIResponse = {
+  success: boolean
+  player: {
+    uuid: string
+    displayname: string
+    networkExp: number
+    firstLogin: number
+    lastLogin: number
+    lastLogout: number
+    mostRecentGameType: string
+    newPackageRank: string
+    rank: string
+    stats: {
+      MCGO: McgoStats
+    }
+  }
+}
+
+export type ExtraKey = keyof McgoStats
+
+export const EXTRA_KEYS = [
+  'coins',
+  'pocket_change',
+  'game_wins_temple',
+  'game_wins_junction',
+  'game_wins_harbor',
+  'game_wins_melon factory v2',
+  'game_wins_alleyway',
+  'game_wins_derailed',
+  'game_wins_riviera',
+  'handgun_cost_reduction',
+  'game_wins_ruins',
+  'game_wins_atomic v2',
+  'game_wins_overgrown',
+  'game_wins_sandstorm',
+  'handgun_damage_increase',
+  'handgun_recoil_reduction',
+  'handgun_reload_speed_reduction',
+  'magnum_damage_increase',
+  'magnum_recoil_reduction',
+  'magnum_reload_speed_reduction',
+  'magnum_cost_reduction',
+  'rifle_damage_increase',
+  'rifle_recoil_reduction',
+  'rifle_reload_speed_reduction',
+  'rifle_cost_reduction',
+  'shotgun_damage_increase',
+  'shotgun_recoil_reduction',
+  'shotgun_reload_speed_reduction',
+  'shotgun_cost_reduction',
+  'pistol_damage_increase',
+  'pistol_recoil_reduction',
+  'pistol_reload_speed_reduction',
+  'scoped_rifle_damage_increase',
+  'scoped_rifle_recoil_reduction',
+  'scoped_rifle_cost_reduction',
+  'scoped_rifle_reload_speed_reduction',
+  'sniper_damage_increase',
+  'sniper_reload_speed_reduction',
+  'sniper_cost_reduction',
+  'carbine_damage_increase',
+  'carbine_recoil_reduction',
+  'carbine_reload_speed_reduction',
+  'carbine_cost_reduction',
+  'strength_training',
+  'bounty_hunter',
+  'game_wins_bazaar',
+  'knife_attack_delay',
+  'knife_damage_increase',
+  'body_armor_cost',
+  'game_wins_castle',
+  'game_wins_reserve',
+  'bullpup_cost_reduction',
+  'auto_shotgun_cost_reduction',
+  'bullpup_damage_increase',
+  'bullpup_recoil_reduction',
+  'bullpup_reload_speed_reduction',
+  'auto_shotgun_reload_speed_reduction',
+  'auto_shotgun_recoil_reduction',
+  'auto_shotgun_damage_increase',
+  'smg_damage_increase',
+  'smg_cost_reduction',
+  'fastest_win_gungame',
+  'game_wins_atomic',
+  'game_wins_melon factory',
+  'smg_recoil_reduction',
+  'smg_reload_speed_reduction',
+] as const satisfies readonly ExtraKey[]
+
+export type Extras = Pick<McgoStats, (typeof EXTRA_KEYS)[number]>
+
+export type FullCvcStats = BaseCvcStats & { extras: Extras }

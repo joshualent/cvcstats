@@ -1,11 +1,25 @@
 import { defineSchema, defineTable } from 'convex/server'
 import { v } from 'convex/values'
 
-const gunStat = v.object({
+export const gunStat = v.object({
   kills: v.optional(v.number()),
   headshots: v.optional(v.number()),
 })
-const modeStat = v.object({
+export const gunsStats = v.object({
+  pistol: gunStat,
+  magnum: gunStat,
+  carbine: gunStat,
+  shotgun: gunStat,
+  autoShotgun: gunStat,
+  scopedRifle: gunStat,
+  handgun: gunStat,
+  rifle: gunStat,
+  smg: gunStat,
+  sniper: gunStat,
+  bullpup: gunStat,
+})
+
+export const modeStat = v.object({
   kills: v.optional(v.number()),
   deaths: v.optional(v.number()),
   game_plays: v.optional(v.number()),
@@ -15,7 +29,13 @@ const modeStat = v.object({
   assists: v.optional(v.number()),
 })
 
+export const modesStats = v.object({
+  deathmatch: modeStat,
+  gungame: modeStat,
+})
+
 export const recordFields = {
+  uuid: v.string(),
   displayname: v.optional(v.string()),
   firstLogin: v.optional(v.number()),
   lastLogin: v.optional(v.number()),
@@ -43,23 +63,8 @@ export const recordFields = {
   knife_kills: v.optional(v.number()),
   grenade_kills: v.optional(v.number()),
 
-  guns: v.object({
-    pistol: gunStat,
-    magnum: gunStat,
-    carbine: gunStat,
-    shotgun: gunStat,
-    autoShotgun: gunStat,
-    scopedRifle: gunStat,
-    handgun: gunStat,
-    rifle: gunStat,
-    smg: gunStat,
-    sniper: gunStat,
-    bullpup: gunStat,
-  }),
-  modes: v.object({
-    deathmatch: modeStat,
-    gungame: modeStat,
-  }),
+  guns: gunsStats,
+  modes: modesStats,
 }
 
 export default defineSchema({
