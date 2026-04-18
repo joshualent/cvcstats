@@ -4,10 +4,22 @@ import { api } from '../../../convex/_generated/api'
 import { useEffect, useState } from 'react'
 import SimpleStatBox from '../../components/SimpleStatBox'
 import type { Doc } from '../../../convex/_generated/dataModel'
-import type { FullCvcStats } from '../../../convex/lib/types'
+import { type FullCvcStats } from '../../../convex/lib/types'
 
 export const Route = createFileRoute('/u/$username')({
   component: RouteComponent,
+  errorComponent: ({ error }) => (
+    <div className="max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold mb-4">Lookup Failed</h1>
+      <p className="text-muted-foreground mb-6">{error.message}</p>
+      <Link
+        to="/"
+        className="text-muted-foreground underline underline-offset-2"
+      >
+        Lookup another player
+      </Link>
+    </div>
+  ),
 })
 
 function RouteComponent() {
@@ -15,18 +27,27 @@ function RouteComponent() {
   const [player, setPlayer] = useState<Doc<'records'> | FullCvcStats | null>(
     null,
   )
+  const [error, setError] = useState<Error | null>(null)
   const getPlayerData = useAction(api.records.getHypixelStats)
   useEffect(() => {
     let cancelled = false
     const load = async () => {
       const data = await getPlayerData({ username: username.toLowerCase() })
-      if (!cancelled) setPlayer(data)
+      if (!cancelled) {
+        if (data.ok) {
+          setPlayer(data.data)
+        } else {
+          setError(new Error(data.code))
+        }
+      }
     }
     load()
     return () => {
       cancelled = true
     }
   }, [username])
+
+  if (error) throw error
 
   return (
     <div>
@@ -37,9 +58,11 @@ function RouteComponent() {
         <h1 className="text-5xl font-bold mb-1">
           {player?.displayname ?? username}
         </h1>
-        <h2 className="text-lg mb-4">
-          UUID: <span className="text-muted-foreground">{player?.uuid}</span>
-        </h2>
+        {player?.uuid && (
+          <h2 className="text-lg mb-4">
+            UUID: <span className="text-muted-foreground">{player?.uuid}</span>
+          </h2>
+        )}
 
         {player && <SimpleStatBox player={player} />}
 

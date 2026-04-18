@@ -1,10 +1,25 @@
 import { Infer, v } from 'convex/values'
-import { gunStat, modeStat, recordFields } from '../schema'
+import {
+  gunsStats,
+  gunStat,
+  modesStats,
+  modeStat,
+  recordFields,
+} from '../schema'
+
+export type ErrorCode =
+  | 'PLAYER_NOT_FOUND'
+  | 'NO_CVC_DATA'
+  | 'UPSTREAM_UNAVAILABLE'
+export type Result<T> = { ok: true; data: T } | { ok: false; code: ErrorCode }
+
+export type GunStat = Infer<typeof gunStat>
+export type GunsStats = Infer<typeof gunsStats>
+
+export type ModeStat = Infer<typeof modeStat>
+export type ModesStats = Infer<typeof modesStats>
 
 const recordValidator = v.object(recordFields)
-// type GunType = Infer<typeof gunStat>
-// type ModeType = Infer<typeof modeStat>
-
 export type BaseCvcStats = Infer<typeof recordValidator>
 
 export type MojangProfileAPIResponse = {
@@ -26,24 +41,6 @@ export type Gun =
   | 'bullpup'
 export type GunKillsKey = `${Gun}Kills`
 export type GunHeadshotsKey = `${Gun}Headshots`
-export type GunStat = {
-  kills: number
-  headshots: number
-}
-
-export type GunsStats = {
-  pistol: GunStat
-  magnum: GunStat
-  carbine: GunStat
-  shotgun: GunStat
-  autoShotgun: GunStat
-  scopedRifle: GunStat
-  handgun: GunStat
-  rifle: GunStat
-  smg: GunStat
-  sniper: GunStat
-  bullpup: GunStat
-}
 
 export type Mode = 'deathmatch' | 'gungame'
 export type ModeKillsKey = `kills_${Mode}`
@@ -53,21 +50,6 @@ export type ModeGameWinsKey = `game_wins_${Mode}`
 export type ModeCopKillsKey = `cop_kills_${Mode}`
 export type ModeCriminalKillsKey = `criminal_kills_${Mode}`
 export type ModeAssistsKey = `assists_${Mode}`
-
-export type ModeStat = {
-  kills: number
-  deaths: number
-  game_plays: number
-  game_wins: number
-  cop_kills: number
-  criminal_kills: number
-  assists: number
-}
-
-export type ModesStats = {
-  deathmatch: ModeStat
-  gungame: ModeStat
-}
 
 export type McgoStats = {
   kills?: number

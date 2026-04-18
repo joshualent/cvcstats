@@ -8,7 +8,11 @@ import { internal } from './_generated/api'
 import { api } from './_generated/api'
 import { v } from 'convex/values'
 
-import type { HypixelPlayerAPIResponse, FullCvcStats } from './lib/types'
+import type {
+  HypixelPlayerAPIResponse,
+  FullCvcStats,
+  Result,
+} from './lib/types'
 import { buildBaseCvcStats, buildFullCvcStats } from './lib/hypixel'
 import { recordFields } from './schema'
 import { Doc } from './_generated/dataModel'
@@ -82,29 +86,43 @@ export const fetchLatestRecord = internalQuery({
 })
 
 export const createRecord = internalMutation({
-  args: { ...recordFields, uuid: v.string() },
+  args: { ...recordFields },
   handler: async (ctx, args) => ctx.db.insert('records', args),
 })
 
 export const getHypixelStats = action({
   args: { username: v.string() },
-  handler: async (ctx, args): Promise<Doc<'records'> | FullCvcStats | null> => {
-    let player = await ctx.runAction(api.records.lookupPlayer, {
+  handler: async (
+    ctx,
+    args,
+  ): Promise<Result<FullCvcStats | Doc<'records'>>> => {
+    const player = await ctx.runAction(api.records.lookupPlayer, {
       username: args.username,
     })
 
     if (!player?.uuid) {
-      return null
+      return {
+        ok: false,
+        code: 'PLAYER_NOT_FOUND',
+      }
     }
 
     const data = await ctx.runQuery(internal.records.fetchLatestRecord, {
       uuid: player.uuid,
     })
-    if (data?._creationTime) return data
+    if (data?._creationTime) {
+      return {
+        ok: true,
+        data,
+      }
+    }
 
     const apiKey = process.env.HYPIXEL_API_KEY
     if (!apiKey) {
-      throw new Error("Can't fetch Hypixel statistics at this time")
+      return {
+        ok: false,
+        code: 'UPSTREAM_UNAVAILABLE',
+      }
     }
 
     const hypixel_response = await fetch(
@@ -112,25 +130,34 @@ export const getHypixelStats = action({
       { headers: { 'API-Key': apiKey } },
     )
     if (!hypixel_response.ok) {
-      throw new Error('Unable to fetch player information from Hypixel')
+      return {
+        ok: false,
+        code: 'UPSTREAM_UNAVAILABLE',
+      }
     }
     const hypixel_data: HypixelPlayerAPIResponse = await hypixel_response.json()
     if (!hypixel_data?.player) {
-      return null
+      return {
+        ok: false,
+        code: 'PLAYER_NOT_FOUND',
+      }
     }
 
     if (!hypixel_data.player.stats.MCGO) {
-      return null
+      return {
+        ok: false,
+        code: 'NO_CVC_DATA',
+      }
     }
-    // schedule a mutation to save player data to convex
     const stats = buildBaseCvcStats(hypixel_data.player)
-    const { uuid, ...rest } = stats
 
     await ctx.scheduler.runAfter(0, internal.records.createRecord, {
-      uuid,
-      ...rest,
+      ...stats,
     })
 
-    return buildFullCvcStats(hypixel_data.player)
+    return {
+      ok: true,
+      data: buildFullCvcStats(hypixel_data.player),
+    }
   },
 })

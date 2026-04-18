@@ -78,6 +78,5 @@ export default defineSchema({
 
   records: defineTable({
     ...recordFields,
-    uuid: v.string(),
   }).index('by_uuid', ['uuid']),
 })
