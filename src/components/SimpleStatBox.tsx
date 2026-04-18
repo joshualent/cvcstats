@@ -1,7 +1,12 @@
 import type { CvcStats } from '../lib/types'
 import SimpleStat from './SimpleStat'
+import type { Doc } from '../../convex/_generated/dataModel'
 
-export default function SimpleStatBox({ player }: { player: CvcStats }) {
+export default function SimpleStatBox({
+  player,
+}: {
+  player: CvcStats | Doc<'records'>
+}) {
   if (!player.kills && !player.deaths)
     return (
       <div className="text-center text-lg">

@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UUsernameRouteImport } from './routes/u/$username'
-import { Route as ConvexUsernameRouteImport } from './routes/convex/$username'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
@@ -29,43 +28,34 @@ const UUsernameRoute = UUsernameRouteImport.update({
   path: '/u/$username',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ConvexUsernameRoute = ConvexUsernameRouteImport.update({
-  id: '/convex/$username',
-  path: '/convex/$username',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/convex/$username': typeof ConvexUsernameRoute
   '/u/$username': typeof UUsernameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/convex/$username': typeof ConvexUsernameRoute
   '/u/$username': typeof UUsernameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/convex/$username': typeof ConvexUsernameRoute
   '/u/$username': typeof UUsernameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/convex/$username' | '/u/$username'
+  fullPaths: '/' | '/about' | '/u/$username'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/convex/$username' | '/u/$username'
-  id: '__root__' | '/' | '/about' | '/convex/$username' | '/u/$username'
+  to: '/' | '/about' | '/u/$username'
+  id: '__root__' | '/' | '/about' | '/u/$username'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  ConvexUsernameRoute: typeof ConvexUsernameRoute
   UUsernameRoute: typeof UUsernameRoute
 }
 
@@ -92,20 +82,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UUsernameRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/convex/$username': {
-      id: '/convex/$username'
-      path: '/convex/$username'
-      fullPath: '/convex/$username'
-      preLoaderRoute: typeof ConvexUsernameRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  ConvexUsernameRoute: ConvexUsernameRoute,
   UUsernameRoute: UUsernameRoute,
 }
 export const routeTree = rootRouteImport

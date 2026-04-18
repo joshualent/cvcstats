@@ -1,11 +1,17 @@
-import { query, action, internalMutation } from './_generated/server'
+import {
+  query,
+  action,
+  internalMutation,
+  internalQuery,
+} from './_generated/server'
 import { internal } from './_generated/api'
 import { api } from './_generated/api'
 import { v } from 'convex/values'
 
-import type { HypixelPlayerAPIResponse } from '../src/lib/types'
+import type { CvcStats, HypixelPlayerAPIResponse } from '../src/lib/types'
 import { buildBaseCvcStats, buildFullCvcStats } from './lib/hypixel'
 import { recordFields } from './schema'
+import { Doc } from './_generated/dataModel'
 
 export const getPlayerByUsername = query({
   args: { username: v.string() },
@@ -65,6 +71,16 @@ export const lookupPlayer = action({
   },
 })
 
+export const fetchLatestRecord = internalQuery({
+  args: { uuid: v.string() },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query('records')
+      .withIndex('by_uuid', (q) => q.eq('uuid', args.uuid))
+      .first()
+  },
+})
+
 export const createRecord = internalMutation({
   args: { ...recordFields, uuid: v.string() },
   handler: async (ctx, args) => ctx.db.insert('records', args),
@@ -72,7 +88,7 @@ export const createRecord = internalMutation({
 
 export const getHypixelStats = action({
   args: { username: v.string() },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<Doc<'records'> | CvcStats | null> => {
     let player = await ctx.runAction(api.records.lookupPlayer, {
       username: args.username,
     })
@@ -80,6 +96,11 @@ export const getHypixelStats = action({
     if (!player?.uuid) {
       return null
     }
+
+    const data = await ctx.runQuery(internal.records.fetchLatestRecord, {
+      uuid: player.uuid,
+    })
+    if (data?._creationTime) return data
 
     const apiKey = process.env.HYPIXEL_API_KEY
     if (!apiKey) {
