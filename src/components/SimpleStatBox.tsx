@@ -2,12 +2,18 @@ import type { CvcStats } from '../lib/types'
 import SimpleStat from './SimpleStat'
 
 export default function SimpleStatBox({ player }: { player: CvcStats }) {
+  if (!player.kills && !player.deaths)
+    return (
+      <div className="text-center text-lg">
+        This player does not have cops vs. crims stats
+      </div>
+    )
   return (
     <div className="border p-5">
       <SimpleStat label="CVC Level" value={player.level} />
       <SimpleStat label="Kills" value={player.kills} />
-      <SimpleStat label="Headshot kils" value={player.headshot_kills} />
-      {player.headshot_kills && player.kills && (
+      <SimpleStat label="Headshot kills" value={player.headshot_kills} />
+      {player.headshot_kills != null && player.kills != null && (
         <SimpleStat
           label="Headshot Kill Percentage"
           value={(player.headshot_kills / player.kills) * 100}
@@ -15,11 +21,11 @@ export default function SimpleStatBox({ player }: { player: CvcStats }) {
         />
       )}
       <SimpleStat label="Deaths" value={player.deaths} />
-      {player.kills && player.deaths && (
+      {player.kills != null && player.deaths != null && (
         <SimpleStat label="K/D" value={player.kills / player.deaths} />
       )}
       <SimpleStat label="Game Wins" value={player.game_wins} />
-      {player.game_wins && player.game_plays && (
+      {player.game_wins != null && player.game_plays != null && (
         <SimpleStat
           label="Game Win Percentage"
           value={(player.game_wins / player.game_plays) * 100}

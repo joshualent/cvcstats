@@ -5,12 +5,15 @@ import SimpleStatBox from '../../components/SimpleStatBox'
 export const Route = createFileRoute('/u/$username')({
   component: RouteComponent,
   loader: async ({ params }) => {
+    const start = performance.now()
     const mojangResponse = await getPlayerUUID({
       data: { username: params.username },
     })
+    console.log(performance.now() - start)
     const hypixelResponse = await getHypixelStats({
       data: { uuid: mojangResponse.id },
     })
+    console.log(performance.now() - start)
     return hypixelResponse
   },
   staleTime: 30 * 60_000,

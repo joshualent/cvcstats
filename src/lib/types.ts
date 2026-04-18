@@ -402,7 +402,7 @@ export type ExtraCvcStats = {
   smg_reload_speed_reduction?: number
 }
 
-type ExtraKey = keyof ExtraCvcStats
+export type ExtraKey = keyof ExtraCvcStats
 // must manually generate from ExtraCvcStats type
 export const EXTRA_KEYS = [
   'coins',

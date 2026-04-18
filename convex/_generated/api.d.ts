@@ -8,13 +8,19 @@
  * @module
  */
 
+import type * as lib_hypixel from "../lib/hypixel.js";
+import type * as records from "../records.js";
+
 import type {
   ApiFromModules,
   FilterApi,
   FunctionReference,
 } from "convex/server";
 
-declare const fullApi: ApiFromModules<{}>;
+declare const fullApi: ApiFromModules<{
+  "lib/hypixel": typeof lib_hypixel;
+  records: typeof records;
+}>;
 
 /**
  * A utility for referencing Convex functions in your app's public API.
