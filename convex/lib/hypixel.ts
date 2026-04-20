@@ -1,12 +1,11 @@
-import { Doc } from '../_generated/dataModel'
-import {
+import type { Doc } from '../_generated/dataModel'
+import type {
   McgoStats,
   Gun,
   Mode,
   HypixelPlayerAPIResponse,
   BaseCvcStats,
   FullCvcStats,
-  EXTRA_KEYS,
   GunStat,
   GunsStats,
   ModeStat,
@@ -14,6 +13,7 @@ import {
   Extras,
   StatsShape,
 } from './types'
+import { EXTRA_KEYS } from './types'
 
 function buildGunStat(mcgo: McgoStats, name: Gun): GunStat {
   return {

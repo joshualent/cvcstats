@@ -22,6 +22,22 @@ export const getPlayerByUsername = query({
   },
 })
 
+export const getPlayerAndLatestRecord = query({
+  args: { username: v.string() },
+  handler: async (ctx, args) => {
+    const player = await ctx.db
+      .query('players')
+      .withIndex('by_username', (q) => q.eq('username', args.username))
+      .first()
+    if (player === null) return { player: null, record: null }
+    const record = await ctx.db
+      .query('records')
+      .withIndex('by_uuid', (q) => q.eq('uuid', player.uuid))
+      .first()
+    return { player, record }
+  },
+})
+
 export const insertPlayer = internalMutation({
   args: { displayname: v.string(), uuid: v.string() },
   handler: async (ctx, args) => {
