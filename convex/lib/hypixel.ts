@@ -13,7 +13,7 @@ import type {
   Extras,
   StatsShape,
 } from './types'
-import { EXTRA_KEYS } from './types'
+import { EXTRA_RECORD_KEYS } from './types'
 
 function buildGunStat(mcgo: McgoStats, name: Gun): GunStat {
   return {
@@ -126,10 +126,12 @@ export function buildExtraCvcStats(
   player: HypixelPlayerAPIResponse['player'],
 ): Extras {
   const result: Extras = {}
-  for (const key of EXTRA_KEYS) {
-    result[key] = player.stats.MCGO[key]
+  const mcgo = player.stats.MCGO
+  for (const key of EXTRA_RECORD_KEYS) {
+    const raw = mcgo[key]
+    result[key] = raw == null ? undefined : raw
   }
-  return result as Extras
+  return result
 }
 
 export function buildFullCvcStats(
